@@ -5,10 +5,15 @@ import by.prus.socialnetwork.model.PublicUser;
 import by.prus.socialnetwork.model.responsemodel.MessageResponse;
 import by.prus.socialnetwork.repository.MessageDao;
 import by.prus.socialnetwork.repository.PublicUserDao;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.ServerSocket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -122,6 +127,13 @@ public class MessageService {
             returnValue.add(mr);
         }
         return returnValue;
+    }
+
+    public String downLoadDialog(Long sender, Long receiver) throws JsonProcessingException {
+        List<MessageResponse> messages = getDialog(sender, receiver);
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(messages);
+        return json;
     }
 
     public String deleteMessage(Long id){

@@ -3,6 +3,7 @@ package by.prus.socialnetwork.controller;
 import by.prus.socialnetwork.model.Message;
 import by.prus.socialnetwork.model.responsemodel.MessageResponse;
 import by.prus.socialnetwork.service.MessageService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,12 @@ public class MessageController {
     @GetMapping("/dialog/{sender}/{receiver}")
     public List<MessageResponse> getDialog(@PathVariable Long sender, @PathVariable Long receiver) {
         return messageService.getDialog(sender, receiver);
+    }
+
+    @GetMapping("/dialog/{sender}/{receiver}/download")
+    public String downladDialog(@PathVariable Long sender, @PathVariable Long receiver) throws JsonProcessingException {
+        return messageService.downLoadDialog(sender, receiver);
+        //скачается файл на стороне клиента на фронте.
     }
 
 }
